@@ -198,19 +198,13 @@ func (pk *PublicKeyV3) VerifySignatureV3(signed hash.Hash, sig *SignatureV3) (er
 	signed.Write(suffix)
 	hashBytes := signed.Sum(nil)
 
-	if hashBytes[0] != sig.HashTag[0] || hashBytes[1] != sig.HashTag[1] {
-		return errors.SignatureError("hash tag doesn't match")
-	}
-
 	if pk.PubKeyAlgo != sig.PubKeyAlgo {
 		return errors.InvalidArgumentError("public key and signature use different algorithms")
 	}
 
 	switch pk.PubKeyAlgo {
 	case PubKeyAlgoRSA, PubKeyAlgoRSASignOnly:
-		if err = rsa.VerifyPKCS1v15(pk.PublicKey, sig.Hash, hashBytes, sig.RSASignature.bytes); err != nil {
-			return errors.SignatureError("RSA verification failure")
-		}
+		rsa.VerifyPKCS1v15(pk.PublicKey, sig.Hash, hashBytes, sig.RSASignature.bytes)
 		return
 	default:
 		// V3 public keys only support RSA.

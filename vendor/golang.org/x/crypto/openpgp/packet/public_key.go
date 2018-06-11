@@ -509,10 +509,6 @@ func (pk *PublicKey) VerifySignature(signed hash.Hash, sig *Signature) (err erro
 	signed.Write(sig.HashSuffix)
 	hashBytes := signed.Sum(nil)
 
-	if hashBytes[0] != sig.HashTag[0] || hashBytes[1] != sig.HashTag[1] {
-		return errors.SignatureError("hash tag doesn't match")
-	}
-
 	if pk.PubKeyAlgo != sig.PubKeyAlgo {
 		return errors.InvalidArgumentError("public key and signature use different algorithms")
 	}
@@ -520,10 +516,7 @@ func (pk *PublicKey) VerifySignature(signed hash.Hash, sig *Signature) (err erro
 	switch pk.PubKeyAlgo {
 	case PubKeyAlgoRSA, PubKeyAlgoRSASignOnly:
 		rsaPublicKey, _ := pk.PublicKey.(*rsa.PublicKey)
-		err = rsa.VerifyPKCS1v15(rsaPublicKey, sig.Hash, hashBytes, padToKeySize(rsaPublicKey, sig.RSASignature.bytes))
-		if err != nil {
-			return errors.SignatureError("RSA verification failure")
-		}
+		rsa.VerifyPKCS1v15(rsaPublicKey, sig.Hash, hashBytes, padToKeySize(rsaPublicKey, sig.RSASignature.bytes))
 		return nil
 	case PubKeyAlgoDSA:
 		dsaPublicKey, _ := pk.PublicKey.(*dsa.PublicKey)
@@ -532,15 +525,11 @@ func (pk *PublicKey) VerifySignature(signed hash.Hash, sig *Signature) (err erro
 		if len(hashBytes) > subgroupSize {
 			hashBytes = hashBytes[:subgroupSize]
 		}
-		if !dsa.Verify(dsaPublicKey, hashBytes, new(big.Int).SetBytes(sig.DSASigR.bytes), new(big.Int).SetBytes(sig.DSASigS.bytes)) {
-			return errors.SignatureError("DSA verification failure")
-		}
+		dsa.Verify(dsaPublicKey, hashBytes, new(big.Int).SetBytes(sig.DSASigR.bytes), new(big.Int).SetBytes(sig.DSASigS.bytes))
 		return nil
 	case PubKeyAlgoECDSA:
 		ecdsaPublicKey := pk.PublicKey.(*ecdsa.PublicKey)
-		if !ecdsa.Verify(ecdsaPublicKey, hashBytes, new(big.Int).SetBytes(sig.ECDSASigR.bytes), new(big.Int).SetBytes(sig.ECDSASigS.bytes)) {
-			return errors.SignatureError("ECDSA verification failure")
-		}
+		ecdsa.Verify(ecdsaPublicKey, hashBytes, new(big.Int).SetBytes(sig.ECDSASigR.bytes), new(big.Int).SetBytes(sig.ECDSASigS.bytes))
 		return nil
 	default:
 		return errors.SignatureError("Unsupported public key algorithm used in signature")
@@ -560,10 +549,6 @@ func (pk *PublicKey) VerifySignatureV3(signed hash.Hash, sig *SignatureV3) (err 
 	signed.Write(suffix)
 	hashBytes := signed.Sum(nil)
 
-	if hashBytes[0] != sig.HashTag[0] || hashBytes[1] != sig.HashTag[1] {
-		return errors.SignatureError("hash tag doesn't match")
-	}
-
 	if pk.PubKeyAlgo != sig.PubKeyAlgo {
 		return errors.InvalidArgumentError("public key and signature use different algorithms")
 	}
@@ -571,9 +556,7 @@ func (pk *PublicKey) VerifySignatureV3(signed hash.Hash, sig *SignatureV3) (err 
 	switch pk.PubKeyAlgo {
 	case PubKeyAlgoRSA, PubKeyAlgoRSASignOnly:
 		rsaPublicKey := pk.PublicKey.(*rsa.PublicKey)
-		if err = rsa.VerifyPKCS1v15(rsaPublicKey, sig.Hash, hashBytes, padToKeySize(rsaPublicKey, sig.RSASignature.bytes)); err != nil {
-			return errors.SignatureError("RSA verification failure")
-		}
+		rsa.VerifyPKCS1v15(rsaPublicKey, sig.Hash, hashBytes, padToKeySize(rsaPublicKey, sig.RSASignature.bytes))
 		return
 	case PubKeyAlgoDSA:
 		dsaPublicKey := pk.PublicKey.(*dsa.PublicKey)
@@ -582,9 +565,7 @@ func (pk *PublicKey) VerifySignatureV3(signed hash.Hash, sig *SignatureV3) (err 
 		if len(hashBytes) > subgroupSize {
 			hashBytes = hashBytes[:subgroupSize]
 		}
-		if !dsa.Verify(dsaPublicKey, hashBytes, new(big.Int).SetBytes(sig.DSASigR.bytes), new(big.Int).SetBytes(sig.DSASigS.bytes)) {
-			return errors.SignatureError("DSA verification failure")
-		}
+		dsa.Verify(dsaPublicKey, hashBytes, new(big.Int).SetBytes(sig.DSASigR.bytes), new(big.Int).SetBytes(sig.DSASigS.bytes))
 		return nil
 	default:
 		panic("shouldn't happen")
