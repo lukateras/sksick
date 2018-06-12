@@ -38,10 +38,6 @@ func NewUserId(name, comment, email string) *UserId {
 	// to create user ids where, say, the name contains a '('. We mirror
 	// this behaviour.
 
-	if hasInvalidCharacters(name) || hasInvalidCharacters(comment) || hasInvalidCharacters(email) {
-		return nil
-	}
-
 	uid := new(UserId)
 	uid.Name, uid.Comment, uid.Email = name, comment, email
 	uid.Id = name
