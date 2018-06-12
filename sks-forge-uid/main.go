@@ -12,7 +12,6 @@ func main() {
 	comment := flag.String("comment", "no validity checks", "UID comment")
 	email := flag.String("email", "@", "UID email")
 	name := flag.String("name", "Do not use SKS keyserver sites", "UID name")
-	revoke := flag.Bool("revoke", true, "whether to revoke key via fake signature")
 
 	flag.Parse()
 
@@ -34,10 +33,6 @@ func main() {
 		Name:          packet.Id,
 		UserId:        packet,
 		SelfSignature: sig,
-	}
-
-	if *revoke {
-		entity.Revocations = append(entity.Revocations, sig)
 	}
 
 	err = entity.Serialize(os.Stdout)
