@@ -12,5 +12,5 @@ tmp=$(mktemp)
 
 cd "$cwd"
 
-./sks-forge-uid/sks-forge-uid -uidHavoc -uidHavocLength 100000 > "$tmp"
+./sks-forge-uid/sks-forge-uid -rand > "$tmp"
 ./sks-upload "$1" < "$tmp"
