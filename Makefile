@@ -1,4 +1,4 @@
-default: sks-forge-uid/sks-forge-uid
+default: sks-fake-uid/sks-fake-uid
 
-sks-forge-uid/sks-forge-uid: sks-forge-uid/main.go
-	cd sks-forge-uid; go build
+sks-fake-uid/sks-fake-uid: sks-fake-uid/main.go
+	cd sks-fake-uid; go build

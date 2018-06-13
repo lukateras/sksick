@@ -8,11 +8,11 @@ shift
 set -e
 
 if [ -z "$keyserver" ]; then
-  echo "Usage: $0 pgp.mit.edu [sks-forge-uid flags ...] < dearmored_key.gpg"
+  echo "Usage: $0 pgp.mit.edu [sks-fake-uid flags ...] < dearmored_key.gpg"
   exit 1
 fi
 
 cd "$cwd"
 
-./sks-forge-uid/sks-forge-uid "$@" > "$tmp"
+./sks-fake-uid/sks-fake-uid "$@" > "$tmp"
 ./sks-upload "$keyserver" < "$tmp"
