@@ -1,0 +1,17 @@
+if [ -z "$1" ]; then
+  echo "Usage: $0 pgp.example.com"
+fi
+
+cd $(dirname $0)
+
+original=$(mktemp)
+modified=$(mktemp)
+
+cat > $original
+
+while true; do
+  ./sks-forge-uid/sks-forge-uid -uidHavoc -uidHavocLength 100000 < $original > $modified
+  ./sks-upload "$1" < $modified
+  sleep 4
+done
+
