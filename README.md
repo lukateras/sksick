@@ -1,4 +1,4 @@
-Thanks a whole lot for Micah Lee who has tweeted about this bug in the first place.
+Thanks a whole lot to Micah Lee who has tweeted about this bug in the first place.
 
 # SKS Tools
 
