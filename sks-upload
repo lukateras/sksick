@@ -3,7 +3,7 @@
 set -e
 
 if [ -z "$1" ]; then
-  echo "Usage: $0 pgp.mit.edu < key.gpg"
+  echo "Usage: $0 pgp.mit.edu < dearmored_key.gpg"
   exit 1
 fi
 
