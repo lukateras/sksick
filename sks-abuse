@@ -1,17 +1,16 @@
+#!/bin/sh
+
+set -e
+
 if [ -z "$1" ]; then
-  echo "Usage: $0 pgp.example.com"
+  echo "Usage: $0 pgp.mit.edu < key.gpg"
+  exit 1
 fi
 
-cd $(dirname $0)
+cwd=$(dirname "$0")
+tmp=$(mktemp)
 
-original=$(mktemp)
-modified=$(mktemp)
+cd "$cwd"
 
-cat > $original
-
-while true; do
-  ./sks-forge-uid/sks-forge-uid -uidHavoc -uidHavocLength 100000 < $original > $modified
-  ./sks-upload "$1" < $modified
-  sleep 4
-done
-
+./sks-forge-uid/sks-forge-uid -uidHavoc -uidHavocLength 100000 > "$tmp"
+./sks-upload "$1" < "$tmp"

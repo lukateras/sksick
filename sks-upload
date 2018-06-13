@@ -1,6 +1,13 @@
 #!/bin/sh
 
+set -e
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 pgp.mit.edu < key.gpg"
+  exit 1
+fi
+
 tmp=$(mktemp)
 
-gpg --enarmor | sed 's/PGP ARMORED FILE/PGP PUBLIC KEY BLOCK/' > $tmp
-curl --data-urlencode keytext@$tmp https://$1/pks/add
+gpg --enarmor | sed 's/PGP ARMORED FILE/PGP PUBLIC KEY BLOCK/' > "$tmp"
+curl --data-urlencode "keytext@$tmp" "https://$1/pks/add"
