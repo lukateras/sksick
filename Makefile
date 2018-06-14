@@ -1,4 +1,7 @@
 default: sks-fake-uid/sks-fake-uid
 
-sks-fake-uid/sks-fake-uid: sks-fake-uid/main.go
-	cd sks-fake-uid; go build
+src:
+	ln -s . src
+
+sks-fake-uid/sks-fake-uid: sks-fake-uid/*.go src
+	cd sks-fake-uid; GOPATH=$(shell pwd) go build
