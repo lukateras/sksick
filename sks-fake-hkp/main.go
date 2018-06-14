@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"io"
-	"log"
 	"net/http"
 	"os"
 )
@@ -17,5 +16,5 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	io.Copy(buf, os.Stdin)
 	http.HandleFunc("/pks/lookup", handler)
-	log.Fatal(http.ListenAndServe(":11371", nil))
+	http.ListenAndServe(":11371", nil)
 }
