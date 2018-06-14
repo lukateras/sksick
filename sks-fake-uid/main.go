@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"time"
 )
 
 var randOn = flag.Bool("rand", false, "use random bytes instead of UID name, comment and email")
@@ -23,6 +24,7 @@ func randString(length uint64) string {
 
 func main() {
 	flag.Parse()
+	rand.Seed(time.Now().UnixNano())
 
 	entity, err := openpgp.ReadEntity(packet.NewReader(os.Stdin))
 
