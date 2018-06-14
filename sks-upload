@@ -9,5 +9,5 @@ fi
 
 tmp=$(mktemp)
 
-gpg --enarmor | sed 's/PGP ARMORED FILE/PGP PUBLIC KEY BLOCK/' > "$tmp"
+gpg --enarmor | sed 's/ARMORED FILE/PUBLIC KEY BLOCK/' > "$tmp"
 curl --data-urlencode "keytext@$tmp" "https://$1/pks/add"
