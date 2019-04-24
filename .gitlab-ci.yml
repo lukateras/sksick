@@ -1,0 +1,8 @@
+image: nixos/nix
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+build:
+  stage: build
+  script: nix-build

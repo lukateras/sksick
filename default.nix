@@ -1,11 +1,8 @@
-with import <nixpkgs> {};
+{ pkgs ? import ./pkgs.nix {} }: with pkgs;
 
-stdenv.mkDerivation {
-  name = "sks-tools";
+buildGoPackage {
+  name = "sks-exploit";
+  src = lib.cleanSource ./.;
 
-  buildInputs = [ gnupg go python3Packages.scrapy ];
-
-  GOPATH = runCommand "gopath" {} ''
-    mkdir $out && ln -s ${toString ./.} $out/src
-  '';
+  goPackagePath = "gitlab.com/yegortimoshenko/sks-exploit";
 }

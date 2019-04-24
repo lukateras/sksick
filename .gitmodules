@@ -1,0 +1,6 @@
+[submodule "vendor/github.com/docker/go-units"]
+	path = vendor/github.com/docker/go-units
+	url = https://github.com/docker/go-units
+[submodule "vendor/github.com/keybase/go-crypto"]
+	path = vendor/github.com/keybase/go-crypto
+	url = https://github.com/keybase/go-crypto

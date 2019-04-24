@@ -1,4 +1,2 @@
-sks-crawl/__pycache__
-sks-fake-hkp/sks-fake-hkp
-sks-fake-uid/sks-fake-uid
-src
+result*
+sks-exploit
